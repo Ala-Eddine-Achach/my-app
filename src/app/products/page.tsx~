@@ -9,7 +9,6 @@ export default function ProductsPage() {
     const [search, setSearch] = useState<string>("");
 
     const fetchProducts = async (searchTerm: string = "") => {
-        setLoading(true);
         const res = await fetch('/api/products?search=' + encodeURIComponent(searchTerm));
         if (!res.ok) {
             throw new Error('Failed to fetch data');
@@ -28,6 +27,7 @@ export default function ProductsPage() {
         setProducts(products);
         setLoading(false);
     }
+    fetchProducts();
     useEffect(() => {
         fetchProducts(search);
     }, []);

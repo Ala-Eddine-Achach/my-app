@@ -1,7 +1,8 @@
 import {NextResponse} from "next/server";
+import {Products} from "@/types/Products";
 
 
-const products = [
+const products: Products[] = [
     {
         name: "Broccoli",
         price: 1.99,
@@ -53,6 +54,11 @@ const products = [
         description: "A refreshing vegetable that is low in calories and high in vitamin K and potassium."
     }
 ];
-export async function GET(){
-    return NextResponse.json({items: products});
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const search:string = searchParams.get('search')?.toLowerCase() || '';
+    const filteredProducts : Products[] = products.filter((product) =>
+        product.name.toLowerCase().includes(search)
+    );
+    return NextResponse.json({items: filteredProducts});
 }

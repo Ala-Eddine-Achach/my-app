@@ -4,7 +4,7 @@ import {NextResponse} from "next/server";
 const products = [
     {
         name: "Broccoli",
-        pric: 1.99,
+        price: 1.99,
         description: "A nutritious green vegetable that is high in vitamin C and fiber."
     },
     {
@@ -53,6 +53,11 @@ const products = [
         description: "A refreshing vegetable that is low in calories and high in vitamin K and potassium."
     }
 ];
-export async function GET(){
-    return NextResponse.json({items: products});
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const search:string = searchParams.get('search')?.toLowerCase() || '';
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(search)
+    );
+    return NextResponse.json({items: filteredProducts});
 }
