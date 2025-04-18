@@ -78,3 +78,11 @@ export async function GET(req: Request) {
     });
     return NextResponse.json({items: filteredProducts});
 }
+export async function POST() {
+    products.forEach(async (product) => {
+        await prisma.product.create({
+            data: product,
+        });
+    });
+    return NextResponse.json({message: "Products created"});
+}
