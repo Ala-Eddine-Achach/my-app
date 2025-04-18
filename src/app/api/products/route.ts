@@ -4,7 +4,7 @@ import {NextResponse} from "next/server";
 const products = [
     {
         name: "Broccoli",
-        pric: 1.99,
+        price: 1.99,
         description: "A nutritious green vegetable that is high in vitamin C and fiber."
     },
     {
