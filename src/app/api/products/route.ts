@@ -1,5 +1,6 @@
 import {NextResponse} from "next/server";
 import {Products} from "@/types/Products";
+import { PrismaClient } from '@prisma/client';
 
 
 const products: Products[] = [
@@ -54,11 +55,26 @@ const products: Products[] = [
         description: "A refreshing vegetable that is low in calories and high in vitamin K and potassium."
     }
 ];
+/*
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const search:string = searchParams.get('search')?.toLowerCase() || '';
     const filteredProducts : Products[] = products.filter((product) =>
         product.name.toLowerCase().includes(search)
     );
+    return NextResponse.json({items: filteredProducts});
+}*/
+const prisma= new PrismaClient();
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const search:string = searchParams.get('search')?.toLowerCase() || '';
+    const filteredProducts : Products[] =await prisma.product.findMany({
+        where: {
+            name: {
+                contains: search,
+                mode: 'insensitive',
+            },
+        },
+    });
     return NextResponse.json({items: filteredProducts});
 }
